@@ -1005,3 +1005,5 @@ commenters = [(u'HokageEzio', 1, 979),
 (u'Way_Moby', 1, 49),
 (u'YmirisHappy', 1, 49),
 (u'YouKnowABitJonSnow', 1, 49)]
+
+print sum(map(lambda x: x[2], commenters))
