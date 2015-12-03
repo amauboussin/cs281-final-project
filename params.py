@@ -1,4 +1,7 @@
 
+all_subreddits_old = ['DestinyTheGame', 'worldnews', 'soccer', 'DotA2', 'AdviceAnimals', 'WTF', 'GlobalOffensive', 'hockey', 'movies', 'SquaredCircle', 'gaming', 'relationships', 'gifs', 'politics', 'CasualConversation', 'explainlikeimfive', 'anime', 'GlobalOffensiveTrade', 'witcher', 'amiibo', 'Fireteams', 'electronic_cigarette', 'asoiaf', 'gameofthrones', 'TumblrInAction', 'Showerthoughts', 'hearthstone', 'IAmA', 'Games', 'Fitness', 'aww', 'tifu', 'buildapc', '2007scape', 'AskMen', 'smashbros', 'AskWomen', 'technology', 'wow', 'MMA'] 
+
+all_subreddits = ['AskReddit', 'leagueoflegends', 'nba', 'funny', 'pics', 'nfl', 'pcmasterrace', 'videos', 'news', 'todayilearned',]
 tv_subreddits = [ 'gameofthrones', 'breakingbad', 'thewalkingdead', 'community',
 	'futurama', 'southpark', 'firefly', 'HouseOfCards', 'adventuretime', 'Sherlock',
 	'doctorwho', 'TopGear', 'startrek', 'ArcherFX', 'Dexter', 'TrueDetective', 'stevenuniverse',
@@ -6,7 +9,7 @@ tv_subreddits = [ 'gameofthrones', 'breakingbad', 'thewalkingdead', 'community',
 	'ArrestedDevelopment', 'DunderMifflin', 'Naruto', 'DBZ', 'Supernatural', 'TrailerParkBoys', 'Seinfeld'
 	'AmericanHorrorStory', 'Lost', 'BobsBurgers', 'Scrubs', 'HannibalTV', '30rock', 'TrueBlood',
 	'jeopardy', 'pokemon', 'IASIP', 'HIMYM', 'TheLastAirbender']
-
+askreddit_commenters = ['Late_Night_Grumbler', 'BiagioLargo', '-_-Equinox666-_-', 'KubrickIsMyCopilot', 'Megaross', 'Asdyc', 'NaturalInclination', 'KeganRhode', 'tinyhousebuilder', 'GustavoFrings', 'roguetroll', 'cocofoshosho1122', 'crogi', 'UniversalChairs', 'Stacieinhorrorland', 'CorDeFerrum', 'BlueInventive', 'StiltzkinTheMoogle', 'jojodancer5', 'InsertSomeName', 'beauty_and_the_beach', 'goodgirl112', 'MrJacksEnigma', 'blamb211', 'silverblaze92', 'Springheeljac', 'DefenestratedEgo', 'suddenweightloss', 'MexicanSpaceProgram', 'NakayamaTakayoshi', 'Universal-Cereal-Bus', 'tfyuhjnbgf', 'iKnowALotOfStuff', 'snow_yoshi', 'GeorgeFromManagement', 'diegojones4', 'JustMe80', 'MyBiologicalRomance', 'iam4real', 'Sexyschizophrenic', 'Flowsephine', 'sybaritic_footstool', 'Back2Bach', 'OptimisticRobotLord', 'without_gravity', 'anthonymyers3000', 'CAN_ZIGZAG', 'Screwj4ck']
 commenters = [(u'HokageEzio', 1, 979),
 (u'methodandred', 1, 821),
 (u'PlasticDynamite', 1, 622),
@@ -1005,5 +1008,3 @@ commenters = [(u'HokageEzio', 1, 979),
 (u'Way_Moby', 1, 49),
 (u'YmirisHappy', 1, 49),
 (u'YouKnowABitJonSnow', 1, 49)]
-
-print sum(map(lambda x: x[2], commenters))

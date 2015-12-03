@@ -1,21 +1,86 @@
 from collections import defaultdict
-from funcy import partial
+from functools import partial
+from funcy import pluck
+import os
 import unicodecsv as csv
 
+import numpy as np
 from params import commenters, tv_subreddits
 
-filepath = 'out.csv'
-with open(filepath, 'rU') as rfile:
-	reader = csv.DictReader(rfile)
-	data = [r for r in reader]
+tv_file = 'out.csv'
+all_sr_dir = 'data/'
 
-def comments_list():
-	return data
+def read_file(filepath):
+    with open(filepath, 'rU') as rfile:
+        reader = csv.DictReader(rfile)
+        data = [r for r in reader]
+    return data
+
+def tv_comments_list():
+    return read_file(tv_file)
 
 def group_by(collection, key):
-	grouped = defaultdict(list)
-	for row in collection:
-		grouped[row[key]].append(row)
-	return grouped
+    grouped = defaultdict(list)
+    for row in collection:
+        grouped[row[key]].append(row)
+    return grouped
 
-comments_grouped_by = partial(group_by, data)
+def tv_comments_grouped_by(group_by_key):
+    return group_by(read_file(tv_file), group_by_key)
+
+
+
+def pool_n(n, comments):
+    """Pool every n comments"""
+    pool = lambda comments: ' '.join(pluck('body', comments))
+    pools = []
+    for i in range( (len(comments) / n) + 1):
+        pools.append(pool(comments[i * n: max(len(comments), i * (n+1))]))
+    return pools
+
+def tv_subreddits_data(n=10, pool_every=40, sort_by='created_utc'):
+    by_subreddit = tv_comments_grouped_by('subreddit')
+    k_n_data = []
+    for sr, comments in by_subreddit.items():
+        n_comments = len(comments)
+        k_n_data.append((sr, n_comments, comments))
+
+    k_n_data = sorted(k_n_data, key = lambda (k, n, d): n, reverse=True)[:n]
+    pooled = {}
+    for (sr, n, comments) in k_n_data:
+        pooled[sr] = pool_n(pool_every, comments)
+    
+    print len(pooled)
+    return pooled
+
+
+def all_subreddits_data(n=30, min_comments=10):
+    subreddits = {f.split('.')[0] : read_file(os.path.join(all_sr_dir, f)) for f in os.listdir(all_sr_dir)[:2]}
+    filtered_subreddits = {}
+    k_mean_data = []
+    for k, comments in subreddits.items():
+        grouped = group_by(comments, 'link_id')
+        mean_comments = np.mean(map(len, grouped.values()))
+        k_mean_data.append((k, mean_comments, grouped))
+    
+    k_mean_data = sorted(k_mean_data, key = lambda (k, m, d): m, reverse=True)[:n]
+    for (k, mean, data) in k_mean_data:
+        filtered_data = {}
+        for d, comments in data.items():
+            if len(comments) > 10:
+                filtered_data[d] = ' '.join([c['body'] for c in comments])
+        filtered_subreddits[k] = filtered_data.values()
+    
+    return filtered_subreddits
+
+def author_data():
+    pass
+
+def main():
+    filtered = all_subreddits_data()
+    print filtered.items()[0]
+    print filtered.items()[1].values()[0]
+
+#  main method for testing
+if __name__ == '__main__':
+    main()
