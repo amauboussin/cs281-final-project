@@ -9,6 +9,7 @@ from params import commenters, tv_subreddits
 
 tv_file = 'out.csv'
 all_sr_dir = 'data/'
+author_file = 'author_data.csv'
 
 def read_file(filepath):
     with open(filepath, 'rU') as rfile:
@@ -55,7 +56,7 @@ def tv_subreddits_data(n=10, pool_every=40, sort_by='created_utc'):
 
 
 def all_subreddits_data(n=30, min_comments=10):
-    subreddits = {f.split('.')[0] : read_file(os.path.join(all_sr_dir, f)) for f in os.listdir(all_sr_dir)[:2]}
+    subreddits = {f.split('.')[0] : read_file(os.path.join(all_sr_dir, f)) for f in os.listdir(all_sr_dir)[:10]}
     filtered_subreddits = {}
     k_mean_data = []
     for k, comments in subreddits.items():
@@ -74,12 +75,15 @@ def all_subreddits_data(n=30, min_comments=10):
     return filtered_subreddits
 
 def author_data():
-    pass
+    data = read_file(author_file)
+    grouped = group_by(data, 'author')
+    pooled = {}
+    for author, comments in grouped.iteritems():
+        pooled[author] =  pool_n(30, sorted(comments, key = lambda c: c['created_utc']))
+    return pooled
 
 def main():
-    filtered = all_subreddits_data()
-    print filtered.items()[0]
-    print filtered.items()[1].values()[0]
+    author_data()
 
 #  main method for testing
 if __name__ == '__main__':
