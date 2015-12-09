@@ -35,8 +35,10 @@ def pool_n(n, comments):
     """Pool every n comments"""
     pool = lambda comments: ' '.join(pluck('body', comments))
     pools = []
-    for i in range( (len(comments) / n) + 1):
-        pools.append(pool(comments[i * n: max(len(comments), i * (n+1))]))
+    for i in range(0, len(comments), n):
+        pools.append(pool(comments[i: min(len(comments), i+n)]))
+    if len(pools[-1]) < n:
+        pools = pools[:-1]
     return pools
 
 def tv_subreddits_data(n=10, pool_every=40, sort_by='created_utc'):
@@ -55,8 +57,8 @@ def tv_subreddits_data(n=10, pool_every=40, sort_by='created_utc'):
     return pooled
 
 
-def all_subreddits_data(n=30, min_comments=10):
-    subreddits = {f.split('.')[0] : read_file(os.path.join(all_sr_dir, f)) for f in os.listdir(all_sr_dir)[:10]}
+def all_subreddits_data(n=30, per_subreddit=1000, min_comments=10):
+    subreddits = {f.split('.')[0] : read_file(os.path.join(all_sr_dir, f)) for f in os.listdir(all_sr_dir)}
     filtered_subreddits = {}
     k_mean_data = []
     for k, comments in subreddits.items():
@@ -74,12 +76,12 @@ def all_subreddits_data(n=30, min_comments=10):
     
     return filtered_subreddits
 
-def author_data():
+def author_data(pool_every=30):
     data = read_file(author_file)
     grouped = group_by(data, 'author')
     pooled = {}
     for author, comments in grouped.iteritems():
-        pooled[author] =  pool_n(30, sorted(comments, key = lambda c: c['created_utc']))
+        pooled[author] =  pool_n(pool_every, sorted(comments, key = lambda c: c['created_utc']))
     return pooled
 
 def main():
