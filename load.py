@@ -72,7 +72,7 @@ def all_subreddits_data(n=30, per_subreddit=1000, min_comments=10):
         for d, comments in data.items():
             if len(comments) > 10:
                 filtered_data[d] = ' '.join([c['body'] for c in comments])
-        filtered_subreddits[k] = filtered_data.values()
+        filtered_subreddits[k] = filtered_data.values()[:per_subreddit]
     
     return filtered_subreddits
 
